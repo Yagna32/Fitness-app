@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        header {
+            background-color: orange;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        nav {
+            background-color: #444;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .exercise {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+        
+        .exercise:last-child {
+            border-bottom: none;
+        }
+        
+        .exercise h2 {
+            margin: 0;
+        }
+        
+        .exercise p {
+            margin: 5px 0;
+        }
+        
+        footer {
+            background-color: orange;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        form {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Fitness App</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Exercises</a></li>
+            <li><a href="#">Nutrition</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="exercise">
+            <h2>Push-ups</h2>
+            <p>Push-ups are a great exercise for building upper body strength.</p>
+        </div>
+        <div class="exercise">
+            <h2>Squats</h2>
+            <p>Squats are effective for building leg muscles and improving core strength.</p>
+        </div>
+        <div class="exercise">
+            <h2>Plank</h2>
+            <p>Planks are excellent for strengthening your core muscles.</p>
+        </div>
+        <form id="bmiForm">
+            <h2>Check BMI</h2>
+            <div style="color: red;display: none;" id="error">Incomplete parameters</div>
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" name="weight" required><br>
+            <label for="height">Height (cm):</label>
+            <input type="number" id="height" name="height" required><br>
+            <input type="submit" value="Calculate BMI" id="submit">
+            <p id="bmiResult"></p>
+        </form>
+    </div>
+    <footer>
+        &copy; 2024 Fitness App
+    </footer>
+    <script>
+        document.getElementById('submit').addEventListener('click', () => {
+            console.log(document.getElementById('weight').value,document.getElementById('height').value)
+            const weight=parseInt(document.getElementById('weight').value)
+            const height=parseInt(document.getElementById('height').value)
+            if(!weight || !height) {
+                document.getElementById('error').style.display = 'block';
+            }
+            else {
+                document.getElementById('error').style.display = 'none';
+                fetch(`http://localhost:5000/getBMI/${weight}/${height}`)
+                .then(response => response.text())
+                .then(data => {
+                  document.getElementById('bmiResult').textContent = data;
+                })
+                .catch(error => {
+                  console.error('Error fetching date and time:', error);
+                });
+            }
+    //   fetch('/getBMI')
+    //     .then(response => response.text())
+    //     .then(data => {
+    //       document.getElementById('currentDateTime').textContent = data;
+    //     })
+    //     .catch(error => {
+    //       console.error('Error fetching date and time:', error);
+    //     });
+    });
+    
+      </script>
+</body>
+</html>
